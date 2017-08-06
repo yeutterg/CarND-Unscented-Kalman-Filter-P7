@@ -67,6 +67,10 @@ UKF::UKF() {
   // Time when the state is true, in us
   // Initially zero
   time_us_ = 0;
+
+  // Init laser and radar NIS to zero
+  NIS_radar_ = 0;
+  NIS_laser_ = 0;
 }
 
 UKF::~UKF() {}
@@ -366,7 +370,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   P = P - K*S*K.transpose();
 
   // compute NIS
-  double NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
+  NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
 }
 
 /**
@@ -472,5 +476,5 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   P = P - K*S*K.transpose();
 
   // compute NIS
-  double NIS_radar_ = z_diff.transpose() * S.inverse() * z_diff;
+  NIS_radar_ = z_diff.transpose() * S.inverse() * z_diff;
 }
